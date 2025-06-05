@@ -1,0 +1,61 @@
+# Ignore les fichiers spécifiques à Rails
+*.rbc
+.rspec_status
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/db/*.sqlite3-[0-9]*
+/public/system
+/coverage/
+/spec/tmp
+*.orig
+rerun.txt
+pickle-email-*.html
+
+# Ignore tous les fichiers de log et les bases de données
+*.log
+*.sqlite3
+*.sqlite3-journal
+
+# Ignore les fichiers d'environnement
+.env
+.env.*
+
+# Ignore les fichiers de dépendances
+/vendor/bundle
+/vendor/cache
+/vendor/gems
+/vendor/ruby
+
+# Ignore les fichiers de configuration spécifiques à l'environnement
+/config/database.yml
+/config/master.key
+/config/credentials/*.key
+
+# Ignore les fichiers de build et de déploiement
+/public/assets
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+
+# Ignore les fichiers système
+.DS_Store
+Thumbs.db
+
+# Ignore les fichiers temporaires
+/tmp/*
+!/tmp/.keep
+/tmp/cache
+/tmp/pids
+/tmp/sessions
+/tmp/sockets
+
+# Ignore les fichiers de test
+/spec/tmp
+/spec/fixtures/files
+/spec/fixtures/vcr_cassettes
+
+# Ignore les fichiers de couverture de test
+/coverage/
