@@ -1,0 +1,150 @@
+<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+  <div class="px-4 py-6 sm:px-0">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold text-gray-900">Détails de la Configuration</h1>
+      <div class="flex space-x-3">
+        <%= link_to "Modifier", edit_trading_config_path(@trading_config), class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+        <%= button_to "Supprimer", trading_config_path(@trading_config), method: :delete, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500", data: { confirm: "Êtes-vous sûr ?" } %>
+      </div>
+    </div>
+
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+      <div class="px-4 py-5 sm:px-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">
+          Informations de la Configuration
+        </h3>
+      </div>
+      <div class="border-t border-gray-200">
+        <dl>
+          <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Mode</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <%= @trading_config.mode&.titleize || "Non défini" %>
+            </dd>
+          </div>
+          <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Intervalle de Vérification</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <%= @trading_config.check_interval %> minutes
+            </dd>
+          </div>
+          <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Croissance Minimale</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <%= number_to_percentage(@trading_config.min_growth_rate, precision: 2) %>
+            </dd>
+          </div>
+          <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Montant Maximum par Trade</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <%= number_to_currency(@trading_config.max_investment_per_trade, unit: "$", precision: 2) %>
+            </dd>
+          </div>
+          <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Statut</dt>
+            <dd class="mt-1 text-sm sm:mt-0 sm:col-span-2">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= @trading_config.status == 'active' ? 'bg-green-100 text-green-800' : (@trading_config.status == 'paused' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') %>">
+                <%= @trading_config.status.titleize %>
+              </span>
+            </dd>
+          </div>
+        </dl>
+      </div>
+      <div class="px-4 py-5 sm:px-6">
+        <div class="mt-6">
+          <% if @trading_config.active? %>
+            <%= button_to stop_trading_trading_config_path(@trading_config), 
+                method: :post, 
+                class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" do %>
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Arrêter le Trading
+            <% end %>
+          <% else %>
+            <%= button_to start_trading_trading_config_path(@trading_config), 
+                method: :post, 
+                class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" do %>
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Démarrer le Trading
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <% if @trading_config.trades.any? %>
+      <div class="mt-8">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">Historique des Trades</h2>
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Date
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Symbole
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Type
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Prix
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Quantité
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Statut
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Profit/Perte
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <% @trading_config.trades.order(created_at: :desc).each do |trade| %>
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <%= trade.created_at.strftime("%d/%m/%Y %H:%M") %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <%= trade.symbol %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <%= trade.side.capitalize %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <%= number_to_currency(trade.price, unit: "USDT") %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <%= trade.amount %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                        <%= case trade.status
+                            when 'completed' then 'bg-green-100 text-green-800'
+                            when 'pending' then 'bg-yellow-100 text-yellow-800'
+                            when 'failed' then 'bg-red-100 text-red-800'
+                            end %>">
+                        <%= trade.status.capitalize %>
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm <%= trade.profit_loss >= 0 ? 'text-green-600' : 'text-red-600' %>">
+                      <%= number_to_currency(trade.profit_loss, unit: "USDT") %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div> 
