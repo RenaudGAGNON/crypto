@@ -1,0 +1,14 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="mb-6">
+    <%= link_to "← Retour à la liste", voucher_orders_path, class: "text-indigo-600 hover:text-indigo-900" %>
+  </div>
+
+  <div class="bg-white rounded-lg shadow">
+    <div class="px-6 py-4 border-b">
+      <h2 class="text-xl font-semibold">Modifier la Commande de Bon d'Achat</h2>
+    </div>
+    <div class="px-6 py-4">
+      <%= render "form", voucher_order: @voucher_order %>
+    </div>
+  </div>
+</div> 
