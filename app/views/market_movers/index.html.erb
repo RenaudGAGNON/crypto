@@ -1,0 +1,72 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold text-gray-900">Top Movers du Marché</h1>
+    <div class="flex space-x-4">
+      <%= button_to "Rafraîchir", refresh_market_movers_path, 
+          class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded",
+          form: { data: { turbo_method: :post } } %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- Top Gainers -->
+    <div class="bg-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-semibold text-green-600 mb-4">Top Gainers</h2>
+      <div class="space-y-4">
+        <% if @top_movers && @top_movers[:top_gainers] %>
+          <% @top_movers[:top_gainers].each do |gainer| %>
+            <div class="flex justify-between items-center p-2 hover:bg-gray-50 rounded">
+              <span class="font-medium"><%= gainer[:symbol] %></span>
+              <div class="text-right">
+                <div class="text-green-600">+<%= number_to_percentage(gainer[:change_percentage], precision: 2) %></div>
+                <div class="text-sm text-gray-500">$<%= number_with_precision(gainer[:price], precision: 2) %></div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="text-gray-500">Données non disponibles</p>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Top Losers -->
+    <div class="bg-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-semibold text-red-600 mb-4">Top Losers</h2>
+      <div class="space-y-4">
+        <% if @top_movers && @top_movers[:top_losers] %>
+          <% @top_movers[:top_losers].each do |loser| %>
+            <div class="flex justify-between items-center p-2 hover:bg-gray-50 rounded">
+              <span class="font-medium"><%= loser[:symbol] %></span>
+              <div class="text-right">
+                <div class="text-red-600"><%= number_to_percentage(loser[:change_percentage], precision: 2) %></div>
+                <div class="text-sm text-gray-500">$<%= number_with_precision(loser[:price], precision: 2) %></div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="text-gray-500">Données non disponibles</p>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Most Actively Traded -->
+    <div class="bg-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-semibold text-blue-600 mb-4">Plus Actifs</h2>
+      <div class="space-y-4">
+        <% if @top_movers && @top_movers[:most_actively_traded] %>
+          <% @top_movers[:most_actively_traded].each do |active| %>
+            <div class="flex justify-between items-center p-2 hover:bg-gray-50 rounded">
+              <span class="font-medium"><%= active[:symbol] %></span>
+              <div class="text-right">
+                <div class="text-blue-600"><%= number_to_percentage(active[:change_percentage], precision: 2) %></div>
+                <div class="text-sm text-gray-500">Vol: <%= number_to_human(active[:volume], units: { unit: "", thousand: "K", million: "M", billion: "B" }) %></div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="text-gray-500">Données non disponibles</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div> 
