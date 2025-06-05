@@ -1,0 +1,27 @@
+:concurrency: 5
+:queues:
+  - default
+  - trading
+  - trading_analysis
+
+:scheduler:
+  :schedule:
+    binance_monitor:
+      cron: '*/5 * * * *'  # Toutes les 5 minutes
+      class: BinanceMonitorJob
+      queue: default
+      description: "Surveillance des nouvelles listes sur Binance" 
+    dry_trading_executor:
+      cron: '*/1 * * * *'  # Toutes les minutes
+      class: DryTradingExecutorJob
+      queue: default
+      description: "Exécute les ordres en mode DRY"
+      args: []
+      enabled: true
+    trading_analysis:
+      cron: '*/5 * * * *'  # Toutes les 5 minutes
+      class: TradingAnalysisJob
+      queue: trading_analysis
+      description: "Analyse les cryptos et génère des recommandations"
+      args: []
+      enabled: true 

@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  symbol: MyString
+  recommendation: MyString
+  confidence: 1.5
+  price: 9.99
+  timestamp: 2025-04-12 21:13:03
+
+two:
+  symbol: MyString
+  recommendation: MyString
+  confidence: 1.5
+  price: 9.99
+  timestamp: 2025-04-12 21:13:03
