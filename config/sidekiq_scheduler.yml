@@ -1,0 +1,4 @@
+binance_monitor_job:
+  cron: "*/5 * * * *"  # Toutes les 5 minutes
+  class: BinanceMonitorJob
+  queue: default 
